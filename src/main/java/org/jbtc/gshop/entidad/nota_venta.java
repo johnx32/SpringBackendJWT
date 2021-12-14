@@ -7,10 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity @Data @NoArgsConstructor
+@Entity
 public class nota_venta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
