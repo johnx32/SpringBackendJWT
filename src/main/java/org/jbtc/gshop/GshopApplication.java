@@ -8,6 +8,7 @@ public class GshopApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GshopApplication.class, args);
+		System.out.println("iniciado");
 	}
 
 }

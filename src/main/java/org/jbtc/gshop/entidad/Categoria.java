@@ -1,18 +1,29 @@
 package org.jbtc.gshop.entidad;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import lombok.Data;
 
 @Entity
+@Data
 public class Categoria {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	String nombre;
-	//Date created_at;
-	//Date updated_at;
+	//@DateTimeFormat
+	Date created_at;
+	//@DateTimeFormat
+	Date updated_at;
 	
 	public Categoria() {
 	}
@@ -20,17 +31,18 @@ public class Categoria {
 		this.id = id;
 		this.nombre = nombre;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
+	public Categoria(String nombre) {
 		this.nombre = nombre;
+	}
+
+	@PrePersist
+	private void antesDePersistir(){
+		this.created_at = new Date();
+	}
+	
+	@PreUpdate
+	private void despuesDePersistir() {
+		this.created_at = new Date();
 	}
 	
 }
