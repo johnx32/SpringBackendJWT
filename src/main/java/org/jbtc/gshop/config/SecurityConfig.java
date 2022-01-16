@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			//.antMatchers("/editar/**","/agregar/**","/eliminar")
 			//.antMatchers("/editar/**","/agregar/**","/")
 			//.hasRole("ADMIN")
+			//.antMatchers("/").permitAll()
 			.antMatchers("/","/api/categoria/**").permitAll()
 			.anyRequest().authenticated()
 		.and()
@@ -58,10 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 
+	/*
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
+	*/
 	
 	
 }
