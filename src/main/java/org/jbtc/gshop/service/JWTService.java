@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.jbtc.gshop.filter.SimpleGrantedAuthorityMixin;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +24,11 @@ import java.util.Date;
 @Component
 public class JWTService implements JWTServiceContract{
 
-    private static final
-    String MKEY = "Contrad21sd54asf654afasf5645as64d5as4fffgasd54a5sd4564asfagds15f2ewef5as4g54as564dfasdasdsf";
-    private static final
+    //@Value("${security.jwt.secret}")
+    private
+    String MKEY="Contrad21sd54asf654afasf5645as64d5as4fffgasd54a5sd4564asfagds15f2ewef5as4g54as564dfasdasdsf";
+    //@Value("${security.jwt.duraciontoken}")
+    private
     long EXPIRATION_DATE=3600000L;
     public static final
     String TOKEN_PREFIX="Bearer ";

@@ -30,17 +30,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "*")
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
 	private JWTServiceContract jwtServiceContract;
-	
+
+
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager,JWTServiceContract jwtServiceContract) {
 		//super();
 		this.authenticationManager = authenticationManager;
 		this.jwtServiceContract=jwtServiceContract;
-		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login","POST"));
+		setRequiresAuthenticationRequestMatcher(
+				new AntPathRequestMatcher("/login","POST"));
 	}
 
 	@Override
