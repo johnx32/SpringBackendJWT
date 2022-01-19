@@ -7,6 +7,7 @@ import org.jbtc.gshop.service.JWTServiceContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -43,15 +46,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().disable().authorizeRequests()
+
+		/*final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		final CorsConfiguration config = new CorsConfiguration();
+
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("GET");
+		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("POST");
+		source.registerCorsConfiguration("/**", config);*/
+
+
+
+
+		http.authorizeRequests()
 			//.antMatchers("/editar/**","/agregar/**","/eliminar")
 			//.antMatchers("/editar/**","/agregar/**","/")
 			//.hasRole("ADMIN")
 			.antMatchers("/").permitAll()
 			//.antMatchers("/","/api/categoria/**").permitAll()
-			.anyRequest().authenticated()
+
+            .anyRequest().authenticated()
+			//.anyRequest().permitAll()
 		.and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtServiceContract))
+				//.authorizeRequests()
+				//.antMatchers(HttpMethod.OPTIONS, "/*").permitAll().and()
 			.addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtServiceContract))
 	        /*.formLogin()
 	        	//.successHandler(null)

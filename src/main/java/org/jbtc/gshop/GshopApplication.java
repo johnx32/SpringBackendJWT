@@ -21,10 +21,12 @@ public class GshopApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*")
-						.allowedHeaders("*")
-						.allowedMethods("GET","POST","PUT","DELETE")
-						.allowCredentials(true);
+						.allowedOrigins("*");
+				//registry.addMapping("/**")
+				//		.allowedOrigins("*")
+				//		.allowedHeaders("*")
+				//		.allowedMethods("GET","POST","PUT","DELETE")
+				//		.allowCredentials(true);
 			}
 		};
 	}

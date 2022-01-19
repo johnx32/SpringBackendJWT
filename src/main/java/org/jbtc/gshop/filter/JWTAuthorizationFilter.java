@@ -1,28 +1,19 @@
 package org.jbtc.gshop.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.jbtc.gshop.service.JWTService;
 import org.jbtc.gshop.service.JWTServiceContract;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 
+//@CrossOrigin(origins = "http://localhost:5500/")
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private JWTServiceContract jwtServiceContract;
@@ -42,6 +33,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }else System.out.println(" Bearer incluido");
 
         UsernamePasswordAuthenticationToken authenticationToken = null;
+        System.out.println("headers: "+header);
         if(jwtServiceContract.validar(header)){
             authenticationToken = new UsernamePasswordAuthenticationToken(
                     jwtServiceContract.getUsername(header),

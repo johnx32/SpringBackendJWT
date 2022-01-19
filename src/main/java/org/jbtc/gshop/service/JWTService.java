@@ -8,7 +8,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.jbtc.gshop.filter.SimpleGrantedAuthorityMixin;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Component
+//@CrossOrigin(origins = "http://localhost:5500/")
 public class JWTService implements JWTServiceContract{
 
     //@Value("${security.jwt.secret}")
@@ -79,7 +79,7 @@ public class JWTService implements JWTServiceContract{
     @Override
     public Claims getClaims(String token) {
         SecretKey secretKey = Keys.hmacShaKeyFor(MKEY.getBytes());
-
+        System.out.println("token: "+token);
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey).build()
                 .parseClaimsJws(resolverToken(token))

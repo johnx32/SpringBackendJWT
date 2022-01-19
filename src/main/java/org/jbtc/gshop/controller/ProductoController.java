@@ -19,7 +19,7 @@ public class ProductoController {
 	@Autowired
 	ProductoRepo productoRepo;
 
-	@CrossOrigin(origins = "http://localhost:5500")
+	//@CrossOrigin(origins = "http://localhost:5500/")
 	@GetMapping("hola")
 	//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	//@Secured("ROLE_ADMIN")
