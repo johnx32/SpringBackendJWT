@@ -25,12 +25,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("request: "+request.getQueryString());
         String header  = request.getHeader(JWTService.AUTHORIZATION_PREFIX);
         if(header!=null && !header.startsWith(JWTService.TOKEN_PREFIX)){
             chain.doFilter(request,response);
             System.out.println(" no empieza con Bearer");
             return;
-        }else System.out.println(" Bearer incluido");
+        }else if(header==null) System.out.println("header es null");
+        else System.out.println(" Bearer incluido");
 
         UsernamePasswordAuthenticationToken authenticationToken = null;
         System.out.println("headers: "+header);

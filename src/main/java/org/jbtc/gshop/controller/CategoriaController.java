@@ -5,6 +5,7 @@ import java.util.List;
 import org.jbtc.gshop.dao.CategoriaDao;
 import org.jbtc.gshop.entidad.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +21,9 @@ public class CategoriaController {
 	}
 
 	//@CrossOrigin(origins = "http://localhost:5500")
+	//@CrossOrigin(origins = "*")
 	@GetMapping(value = "{id}")
+	@Secured("ROLE_ADMIN")
 	public Categoria getCategoriaById(@PathVariable Long id) {
 		Categoria c;
 		try {

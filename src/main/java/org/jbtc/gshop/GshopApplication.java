@@ -15,13 +15,14 @@ public class GshopApplication {
 	}
 
 
-	@Bean
+	/*@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*");
+						.allowedOrigins("http://localhost:5500");
+						//.allowedOrigins("*");
 				//registry.addMapping("/**")
 				//		.allowedOrigins("*")
 				//		.allowedHeaders("*")
@@ -29,6 +30,6 @@ public class GshopApplication {
 				//		.allowCredentials(true);
 			}
 		};
-	}
+	}*/
 
 }

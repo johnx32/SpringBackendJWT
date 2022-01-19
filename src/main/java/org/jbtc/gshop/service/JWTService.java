@@ -73,7 +73,10 @@ public class JWTService implements JWTServiceContract{
                     .parse(header.replace("Bearer",""));*/
             getClaims(token);
             return true;
-        }catch (JwtException e){return false;}
+        }catch (JwtException e){
+            System.out.println( "Error token invalido: "+e.getMessage());
+            return false;
+        }
     }
 
     @Override
