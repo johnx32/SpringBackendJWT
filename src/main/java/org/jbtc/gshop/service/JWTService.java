@@ -82,7 +82,7 @@ public class JWTService implements JWTServiceContract{
     @Override
     public Claims getClaims(String token) {
         SecretKey secretKey = Keys.hmacShaKeyFor(MKEY.getBytes());
-        System.out.println("token: "+token);
+        //System.out.println("token: "+token);
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey).build()
                 .parseClaimsJws(resolverToken(token))
@@ -103,9 +103,9 @@ public class JWTService implements JWTServiceContract{
                 .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixin.class)
                 .readValue(roles.toString().getBytes(), SimpleGrantedAuthority[].class));
 
-        authorities.forEach(grantedAuthority -> {
+        /*authorities.forEach(grantedAuthority -> {
             System.out.println(" autoridad: "+grantedAuthority);
-        });
+        });*/
         return authorities;
     }
 

@@ -61,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 			
-		System.out.println("credenciales : "+username+" "+password);
+		//System.out.println("credenciales : "+username+" "+password);
 		
 		return authenticationManager.authenticate(authToken);
 	}
