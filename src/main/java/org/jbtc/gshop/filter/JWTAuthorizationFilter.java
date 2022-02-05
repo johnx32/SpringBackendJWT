@@ -35,7 +35,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         else System.out.println(" Bearer incluido");
 
         UsernamePasswordAuthenticationToken authenticationToken = null;
-        //System.out.println("headers: "+header);
+        System.out.println("headers: "+header);
         if(jwtServiceContract.validar(header)){
             authenticationToken = new UsernamePasswordAuthenticationToken(
                     jwtServiceContract.getUsername(header),

@@ -14,6 +14,7 @@ public class Rol {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
+	
 	String name;
 	Long id_usuario;
 }

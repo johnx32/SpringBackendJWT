@@ -1,15 +1,13 @@
 package org.jbtc.gshop.config;
 
-import org.aspectj.weaver.ast.And;
 import org.jbtc.gshop.filter.JWTAuthenticationFilter;
 import org.jbtc.gshop.filter.JWTAuthorizationFilter;
 import org.jbtc.gshop.service.JWTServiceContract;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,12 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -32,11 +29,28 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserDetailsService userdetails;
+	private UserDetailsService userDetailsService;
 	@Autowired
 	private JWTServiceContract jwtServiceContract;
 
-	@Override
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
+
+	/*@Autowired
+	public void configurerGlobal(AuthenticationManagerBuilder build) throws Exception{
+		build.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}*/
+	@Bean
+	public AuthenticationProvider authProvider(){
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder());
+		return provider;
+	}
+
+	/*@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.inMemoryAuthentication()
@@ -48,7 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.password("{noop}123")
 			//.password("123")
 			.roles("USER");
-	}
+	}*/
+
+
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
