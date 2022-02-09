@@ -1,13 +1,19 @@
 package org.jbtc.gshop.controller;
 
+import org.jbtc.gshop.dao.ProductoDao;
+import org.jbtc.gshop.entidad.Producto;
+import org.jbtc.gshop.entidad.Rol;
 import org.jbtc.gshop.repository.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/producto")
@@ -17,7 +23,8 @@ public class ProductoController {
 	//@Qualifier("algo")
 	//ProductoDao productoDao;
 	@Autowired
-	ProductoRepo productoRepo;
+	//ProductoRepo productoRepo;
+	ProductoDao productoDao;
 
 	//@CrossOrigin(origins = "http://localhost:5500/")
 	@GetMapping("hola")
@@ -25,6 +32,54 @@ public class ProductoController {
 	//@Secured("ROLE_ADMIN")
 	public String verProductos() {
 		return "holas";
+	}
+
+	@PostMapping
+	public ResponseEntity<String> addProducto(@RequestBody Producto producto){
+		if(producto!=null){
+			productoDao.save(producto);
+			return new ResponseEntity<>("", HttpStatus.OK);
+		}else
+			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+
+	@GetMapping(value = "{id}")
+	public Producto getProductoById(@PathVariable Long id){
+		Producto p = productoDao.findById(id).get();
+		if(p!=null)
+			return p;
+		else
+			return new Producto("","","",0,0,0);
+	}
+
+	@GetMapping
+	public List<Producto> getProductos(){
+		List<Producto> productoList = productoDao.findAll();
+		if(productoList!=null)
+			return productoList;
+		else
+			return new ArrayList<Producto>();
+	}
+
+	@PutMapping
+	public ResponseEntity<String> updateProducto(@RequestBody Producto producto){
+		if(producto!=null) {
+			if (producto.getId() != null && producto.getId() > 0)
+				producto.setUpdated_at(new Date());
+			if(productoDao.save(producto)!=null)
+				return new ResponseEntity<>("", HttpStatus.OK);
+			else return new ResponseEntity<>("", HttpStatus.EXPECTATION_FAILED);
+		}else return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+
+	@DeleteMapping(value = "{id}")
+	public ResponseEntity<String> deleteProducto(Producto producto){
+		try {
+			productoDao.delete(producto);
+			return new ResponseEntity<>("", HttpStatus.OK);
+		}catch (Exception e){
+			return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 }

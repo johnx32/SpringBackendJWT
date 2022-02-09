@@ -2,10 +2,12 @@ package org.jbtc.gshop.controller;
 
 import org.jbtc.gshop.dao.UsuarioDao;
 import org.jbtc.gshop.entidad.Usuario;
+import org.jbtc.gshop.model.NewUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,13 +21,28 @@ public class UsuarioControler {
 
     @Autowired
     UsuarioDao usuarioDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<String> addUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<String> addUsuario(@RequestBody NewUsuario nusuario){
         //todo: validar que usuario no tenga fecha de creacion hack
-        if(usuario!=null) {
+        if(nusuario!=null) {
+            if(!nusuario.getPassword().equals(nusuario.getRepassword())) {
+                System.out.println("password incorrectas");
+                return new ResponseEntity<>("password y repassword son diferentes", HttpStatus.BAD_REQUEST);
+            }else{
+                Usuario u = usuarioDao.findByUsername(nusuario.getUsername());
+                if(u==null) return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
+            }
+            Usuario usuario = new Usuario();
+            usuario.setUsername(nusuario.getUsername());
+            usuario.setPassword(passwordEncoder.encode(nusuario.getPassword()));
+            usuario.setRoles(nusuario.getRoles());
             usuario.setCreated_at(new Date());
+
             System.out.println("nuevo usuario: "+usuario);
+
             usuarioDao.save(usuario);
             return new ResponseEntity<>("", HttpStatus.OK);
         }else

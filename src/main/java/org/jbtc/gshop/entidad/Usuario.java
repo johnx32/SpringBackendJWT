@@ -3,14 +3,9 @@ package org.jbtc.gshop.entidad;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,14 +17,21 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String username;
+	@JsonIgnore
 	private String password;
-	@OneToMany(
+	@ManyToMany(
 		//mappedBy = "Usuario",
 		fetch = FetchType.LAZY
 	)
-	@JoinColumn(name="id_usuario")
+	//@JoinColumn(name="id_usuario")
+	@JoinTable(name = "usuario_roles"
+		,joinColumns = @JoinColumn(name = "usuario_id")
+		,inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
 	private List<Rol> roles;
+	@JsonIgnore
 	private Date created_at;
+	@JsonIgnore
 	private Date updated_at;
 
 	public Usuario(String username, String password) {
