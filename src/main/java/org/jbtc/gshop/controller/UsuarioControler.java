@@ -4,15 +4,16 @@ import org.jbtc.gshop.dao.UsuarioDao;
 import org.jbtc.gshop.entidad.Usuario;
 import org.jbtc.gshop.model.NewUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/usuarios")
@@ -31,10 +32,10 @@ public class UsuarioControler {
             if(!nusuario.getPassword().equals(nusuario.getRepassword())) {
                 System.out.println("password incorrectas");
                 return new ResponseEntity<>("password y repassword son diferentes", HttpStatus.BAD_REQUEST);
-            }else{
-                Usuario u = usuarioDao.findByUsername(nusuario.getUsername());
-                if(u==null) return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
             }
+            Usuario u = usuarioDao.findByUsername(nusuario.getUsername());
+            if(u!=null) return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
+
             Usuario usuario = new Usuario();
             usuario.setUsername(nusuario.getUsername());
             usuario.setPassword(passwordEncoder.encode(nusuario.getPassword()));
@@ -59,12 +60,8 @@ public class UsuarioControler {
     }
 
     @GetMapping
-    public List<Usuario> getUsuarios(){
-        List<Usuario> usuarioList = usuarioDao.findAll();
-        if(usuarioList!=null)
-            return usuarioList;
-        else
-            return new ArrayList<Usuario>();
+    public Page<Usuario> getUsuarios(@Param("name") String name, Pageable page){
+        return usuarioDao.search(name,page);
     }
 
     @PutMapping
