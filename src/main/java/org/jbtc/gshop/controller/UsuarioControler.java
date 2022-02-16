@@ -61,6 +61,7 @@ public class UsuarioControler {
 
     @GetMapping
     public Page<Usuario> getUsuarios(@Param("name") String name, Pageable page){
+        System.out.println("pagina: "+page.getPageNumber());
         return usuarioDao.search(name,page);
     }
 
