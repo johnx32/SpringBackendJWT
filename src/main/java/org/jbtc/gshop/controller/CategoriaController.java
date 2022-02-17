@@ -22,7 +22,7 @@ public class CategoriaController {
 	@Secured("ROLE_ADMIN")
 	@PostMapping
 	public void insertCategoria(@RequestBody Categoria categoria) {
-		if(categoria!=null && categoria.getId()>0) {
+		if(categoria!=null && categoria.getId()!=null && categoria.getId()>0) {
 			categoria.setCreated_at(new Date());
 		}
 		System.out.println("categoria recivida: "+categoria);

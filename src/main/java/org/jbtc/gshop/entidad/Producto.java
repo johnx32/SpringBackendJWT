@@ -1,5 +1,6 @@
 package org.jbtc.gshop.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ public class Producto {
 	Date created_at;
 	Date updated_at;
 	//Long id_categoria;
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Categoria categoria;
 

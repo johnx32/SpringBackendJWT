@@ -5,6 +5,9 @@ import org.jbtc.gshop.entidad.Producto;
 import org.jbtc.gshop.entidad.Rol;
 import org.jbtc.gshop.repository.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -16,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/producto")
+@RequestMapping("api/productos")
 public class ProductoController {
 
 	//@Autowired
@@ -36,6 +39,7 @@ public class ProductoController {
 
 	@PostMapping
 	public ResponseEntity<String> addProducto(@RequestBody Producto producto){
+		System.out.println("nuevo producto = "+producto);
 		if(producto!=null){
 			productoDao.save(producto);
 			return new ResponseEntity<>("", HttpStatus.OK);
@@ -53,12 +57,8 @@ public class ProductoController {
 	}
 
 	@GetMapping
-	public List<Producto> getProductos(){
-		List<Producto> productoList = productoDao.findAll();
-		if(productoList!=null)
-			return productoList;
-		else
-			return new ArrayList<Producto>();
+	public Page<Producto> getProductos(@Param("titulo") String titulo, Pageable page){
+		return productoDao.search(titulo,page);
 	}
 
 	@PutMapping
